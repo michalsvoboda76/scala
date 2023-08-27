@@ -1,6 +1,6 @@
 # Scala language 
 
-## Interesting know-how sources on
+## Interesting know-how sources
 
 * Daniel Ciocîrlan
   * https://blog.rockthejvm.com/ (more than 90 articles on Scala)
@@ -22,11 +22,11 @@
 * Akka overview https://akka.io/docs/
 * Akka introduction
   * Akka Actors Quickstart with Scala https://developer.lightbend.com/guides/akka-quickstart-scala/
-    This guide introduces Akka Actors by describing the Scala version of the Hello World example.
+  This guide introduces Akka Actors by describing the Scala version of the Hello World example.
     
   * Introduction to Akka https://doc.akka.io/docs/akka/current/typed/guide/introduction.html
-    This Getting Started guide provides the next level of information. It covers why the actor model fits the needs of modern distributed systems and includes a tutorial that will help further your knowledge of Akka.
+  This Getting Started guide provides the next level of information. It covers why the actor model fits the needs of modern distributed systems and includes a tutorial that will help further your knowledge of Akka.
   
   * Akka Guide  https://developer.lightbend.com/docs/akka-guide/index.html
-    This guide provides information to aid in understanding and using Akka.
-    It discusses more Akka concepts and features and gives an overview of Akka as a toolkit.
+  This guide provides information to aid in understanding and using Akka.
+  It discusses more Akka concepts and features and gives an overview of Akka as a toolkit.
