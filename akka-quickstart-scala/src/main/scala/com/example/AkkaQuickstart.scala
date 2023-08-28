@@ -33,10 +33,12 @@ object GreeterBot {
   private def bot(greetingCounter: Int, max: Int): Behavior[Greeter.Greeted] =
     Behaviors.receive { (context, message) =>
       val n = greetingCounter + 1
-      context.log.info("Greeting {} for {}", n, message.whom)
+      
       if (n > max) {
+        context.log.info("Greeting {} for {} attempt STOPPED!", n, message.whom)
         Behaviors.stopped
       } else {
+        context.log.info("Greeting {} for {} will be sent", n, message.whom)
         message.from ! Greeter.Greet(message.whom, context.self)
         bot(n, max)
       }
