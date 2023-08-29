@@ -68,7 +68,10 @@ class MainActorLifecycle(context: ActorContext[String])
       case "start" =>
         val first = context.spawn(StartStopActor1(), "first")
         first ! "stop"
-        this
+        // `Behaviors.stopped` here is used to stop the whole application gracefully 
+        //  - to prevent the terminal ramains running even if the application itself do nothing
+        // Originally, the `this` was returned here
+        Behaviors.stopped
     }
 }
 

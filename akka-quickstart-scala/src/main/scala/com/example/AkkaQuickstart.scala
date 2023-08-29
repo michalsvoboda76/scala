@@ -64,7 +64,11 @@ object GreeterMain {
         println(s"Actor 'replyTo'==$replyTo")
         //#create-actors
         greeter ! Greeter.Greet(message.name, replyTo)
-        Behaviors.same
+        
+        // `Behaviors.stopped` here is used to stop the whole application gracefully 
+        //  - to prevent the terminal ramains running even if the application itself do nothing
+        // Originally, the `Behaviors.same` was returned here
+        Behaviors.stopped
       }
     }
 }

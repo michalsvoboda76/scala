@@ -37,7 +37,10 @@ class ActorHierarchyMain(context: ActorContext[String]) extends AbstractBehavior
         val firstRef = context.spawn(PrintMyActorRefActor(), "first-actor")
         println(s"First: $firstRef")
         firstRef ! "printit"
-        this
+        // `Behaviors.stopped` here is used to stop the whole application gracefully 
+        //  - to prevent the terminal ramains running even if the application itself do nothing
+        // Originally, the `this` was returned here
+        Behaviors.stopped
     }
 }
 
