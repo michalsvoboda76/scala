@@ -17,7 +17,10 @@
 * geeksforgeeks.org
   * Scala Programming Language  https://www.geeksforgeeks.org/scala-programming-language/?ref=lbp
 
-* https://docs.scala-lang.org/
+* LEARN SCALA https://docs.scala-lang.org/
+
+* Scala Days Conferences  https://www.youtube.com/@ScalaDaysConferences
+  * [How to Get Started with Scala?](https://youtu.be/rXalh8dhPZc?si=4BprObHojVcCbXYY)
 
 * Akka overview https://akka.io/docs/
 * Akka introduction
