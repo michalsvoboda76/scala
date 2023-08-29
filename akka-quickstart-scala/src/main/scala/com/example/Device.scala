@@ -26,10 +26,23 @@ object Device {
       requestId: Long,
       value: Option[Double]
   )
+
+  final case class RecordTemperature(
+      requestId: Long,
+      value: Double,
+      replyTo: ActorRef[TemperatureRecorded]
+  ) extends Command
+  
+  final case class TemperatureRecorded(
+      requestId: Long
+  )
 }
 
-class Device(context: ActorContext[Device.Command], groupId: String, deviceId: String)
-    extends AbstractBehavior[Device.Command](context) {
+class Device(
+    context: ActorContext[Device.Command],
+    groupId: String,
+    deviceId: String
+) extends AbstractBehavior[Device.Command](context) {
   import Device._
 
   var lastTemperatureReading: Option[Double] = None
@@ -38,6 +51,12 @@ class Device(context: ActorContext[Device.Command], groupId: String, deviceId: S
 
   override def onMessage(msg: Command): Behavior[Command] = {
     msg match {
+      case RecordTemperature(id, value, replyTo) =>
+        context.log.info2("Recorded temperature reading {} with {}", value, id)
+        lastTemperatureReading = Some(value)
+        replyTo ! TemperatureRecorded(id)
+        this
+
       case ReadTemperature(id, replyTo) =>
         replyTo ! RespondTemperature(id, lastTemperatureReading)
         this
