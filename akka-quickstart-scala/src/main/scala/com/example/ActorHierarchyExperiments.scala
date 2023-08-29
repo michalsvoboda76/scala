@@ -24,13 +24,13 @@ class PrintMyActorRefActor(context: ActorContext[String]) extends AbstractBehavi
     }
 }
 
-object Main {
+object ActorHierarchyMain {
   def apply(): Behavior[String] =
-    Behaviors.setup(context => new Main(context))
+    Behaviors.setup(context => new ActorHierarchyMain(context))
 
 }
 
-class Main(context: ActorContext[String]) extends AbstractBehavior[String](context) {
+class ActorHierarchyMain(context: ActorContext[String]) extends AbstractBehavior[String](context) {
   override def onMessage(msg: String): Behavior[String] =
     msg match {
       case "start" =>
@@ -42,6 +42,6 @@ class Main(context: ActorContext[String]) extends AbstractBehavior[String](conte
 }
 
 object ActorHierarchyExperiments extends App {
-  val testSystem = ActorSystem(Main(), "testSystem")
+  val testSystem = ActorSystem(ActorHierarchyMain(), "testSystem")
   testSystem ! "start"
 }
