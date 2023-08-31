@@ -1,6 +1,7 @@
 package com.example
 
 // the IoT example, part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_4.html
+//      extended in part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_5.html
 
 import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
@@ -37,6 +38,25 @@ object DeviceManager {
 
   private final case class DeviceGroupTerminated(groupId: String)
       extends DeviceManager.Command
+
+  final case class RequestAllTemperatures(
+      requestId: Long,
+      groupId: String,
+      replyTo: ActorRef[RespondAllTemperatures]
+  ) extends DeviceGroupQuery.Command
+      with DeviceGroup.Command
+      with DeviceManager.Command
+
+  final case class RespondAllTemperatures(
+      requestId: Long,
+      temperatures: Map[String, TemperatureReading]
+  )
+
+  sealed trait TemperatureReading
+  final case class Temperature(value: Double) extends TemperatureReading
+  case object TemperatureNotAvailable extends TemperatureReading
+  case object DeviceNotAvailable extends TemperatureReading
+  case object DeviceTimedOut extends TemperatureReading
 }
 
 class DeviceManager(context: ActorContext[DeviceManager.Command])

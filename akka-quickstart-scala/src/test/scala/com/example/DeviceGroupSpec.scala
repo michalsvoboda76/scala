@@ -1,6 +1,7 @@
 package com.example
 
 // the IoT example, part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_4.html
+//      extended in part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_5.html
 
 import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -12,7 +13,11 @@ class DeviceGroupSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
     DeviceRegistered,
     ReplyDeviceList,
     RequestDeviceList,
-    RequestTrackDevice
+    RequestTrackDevice,
+    RequestAllTemperatures,
+    RespondAllTemperatures,
+    TemperatureNotAvailable,
+    Temperature
   }
   import Device.{RecordTemperature, TemperatureRecorded}
 
@@ -128,6 +133,45 @@ class DeviceGroupSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
           ReplyDeviceList(requestId = 1, Set("device2"))
         )
       }
+    }
+
+    "be able to collect temperatures from all active devices" in {
+      val registeredProbe = createTestProbe[DeviceRegistered]()
+      val groupActor = spawn(DeviceGroup("group"))
+
+      groupActor ! RequestTrackDevice("group", "device1", registeredProbe.ref)
+      val deviceActor1 = registeredProbe.receiveMessage().device
+
+      groupActor ! RequestTrackDevice("group", "device2", registeredProbe.ref)
+      val deviceActor2 = registeredProbe.receiveMessage().device
+
+      groupActor ! RequestTrackDevice("group", "device3", registeredProbe.ref)
+      registeredProbe.receiveMessage()
+
+      // Check that the device actors are working
+      val recordProbe = createTestProbe[TemperatureRecorded]()
+      deviceActor1 ! RecordTemperature(requestId = 0, 1.0, recordProbe.ref)
+      recordProbe.expectMessage(TemperatureRecorded(requestId = 0))
+      deviceActor2 ! RecordTemperature(requestId = 1, 2.0, recordProbe.ref)
+      recordProbe.expectMessage(TemperatureRecorded(requestId = 1))
+      // No temperature for device3
+
+      val allTempProbe = createTestProbe[RespondAllTemperatures]()
+      groupActor ! RequestAllTemperatures(
+        requestId = 0,
+        groupId = "group",
+        allTempProbe.ref
+      )
+      allTempProbe.expectMessage(
+        RespondAllTemperatures(
+          requestId = 0,
+          temperatures = Map(
+            "device1" -> Temperature(1.0),
+            "device2" -> Temperature(2.0),
+            "device3" -> TemperatureNotAvailable
+          )
+        )
+      )
     }
   }
 }

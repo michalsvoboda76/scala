@@ -1,6 +1,7 @@
 package com.example
 
 // the IoT example, part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_4.html
+//      extended in part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_5.html
 
 import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
@@ -10,6 +11,7 @@ import akka.actor.typed.scaladsl.AbstractBehavior
 import akka.actor.typed.scaladsl.ActorContext
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.scaladsl.LoggerOps
+import scala.concurrent.duration._
 
 object DeviceGroup {
   def apply(groupId: String): Behavior[Command] =
@@ -32,7 +34,8 @@ class DeviceGroup(context: ActorContext[DeviceGroup.Command], groupId: String)
     DeviceRegistered,
     ReplyDeviceList,
     RequestDeviceList,
-    RequestTrackDevice
+    RequestTrackDevice,
+    RequestAllTemperatures
   }
 
   private var deviceIdToActor = Map.empty[String, ActorRef[Device.Command]]
@@ -82,6 +85,20 @@ class DeviceGroup(context: ActorContext[DeviceGroup.Command], groupId: String)
         context.log.info("Device actor for {} has been terminated", deviceId)
         deviceIdToActor -= deviceId
         this
+
+      case RequestAllTemperatures(requestId, gId, replyTo) =>
+        if (gId == groupId) {
+          context.spawnAnonymous(
+            DeviceGroupQuery(
+              deviceIdToActor,
+              requestId = requestId,
+              requester = replyTo,
+              3.seconds
+            )
+          )
+          this
+        } else
+          Behaviors.unhandled
     }
 
   override def onSignal: PartialFunction[Signal, Behavior[Command]] = {

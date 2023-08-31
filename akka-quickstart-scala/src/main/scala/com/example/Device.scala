@@ -1,6 +1,7 @@
 package com.example
 
 // the IoT example, part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_3.html
+//      extended in part https://doc.akka.io/docs/akka/current/typed/guide/tutorial_5.html
 
 import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
@@ -23,7 +24,8 @@ object Device {
   ) extends Command
 
   final case class RespondTemperature(
-      requestId: Long,
+      requestId: Long, 
+      deviceId: String,
       value: Option[Double]
   )
 
@@ -60,7 +62,7 @@ class Device(
         this
 
       case ReadTemperature(id, replyTo) =>
-        replyTo ! RespondTemperature(id, lastTemperatureReading)
+        replyTo ! RespondTemperature(id, deviceId, lastTemperatureReading)
         this
 
       case Passivate =>
