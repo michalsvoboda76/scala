@@ -32,10 +32,12 @@ object Device {
       value: Double,
       replyTo: ActorRef[TemperatureRecorded]
   ) extends Command
-  
+
   final case class TemperatureRecorded(
       requestId: Long
   )
+
+  case object Passivate extends Command
 }
 
 class Device(
@@ -60,6 +62,9 @@ class Device(
       case ReadTemperature(id, replyTo) =>
         replyTo ! RespondTemperature(id, lastTemperatureReading)
         this
+
+      case Passivate =>
+        Behaviors.stopped
     }
   }
 
