@@ -17,3 +17,5 @@ target/
 project/bloop
 project/metals.sbt
 metals.sbt
+
+kafka-1-logs/
