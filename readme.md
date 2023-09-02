@@ -5,6 +5,7 @@
 * Daniel Ciocîrlan
   * https://blog.rockthejvm.com/ (more than 90 articles on Scala)
     * :heavy_check_mark: Sending HTTP Requests in Scala and Akka in 5 minutes https://blog.rockthejvm.com/a-5-minute-akka-http-client/
+    * :point_right: Akka Mini-Project https://blog.rockthejvm.com/akka-cassandra-project/
       
   * rockthejvm on GitHub :eye_speech_bubble: https://github.com/orgs/rockthejvm/repositories?language=scala
     
