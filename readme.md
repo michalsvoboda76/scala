@@ -5,8 +5,10 @@
 * Daniel Ciocîrlan
   * https://blog.rockthejvm.com/ (more than 90 articles on Scala)
     * :heavy_check_mark: Sending HTTP Requests in Scala and Akka in 5 minutes https://blog.rockthejvm.com/a-5-minute-akka-http-client/
+      
+  * rockthejvm on GitHub :eye_speech_bubble: https://github.com/orgs/rockthejvm/repositories?language=scala
     
-  * https://www.youtube.com/@rockthejvm
+  * rockthejvm on YouTube :eye_speech_bubble: https://www.youtube.com/@rockthejvm
     * :heavy_check_mark: Scala Tutorial - Scala at Light Speed, Part 1: Getting Started https://youtu.be/-8V6bMjThNo?si=2__6iDwP5Tw_1wyd
     * :eye_speech_bubble: Scala Tips https://www.youtube.com/playlist?list=PLmtsMNDRU0Bzj7INIrLugi3a_WClwQuiS
     * :eye_speech_bubble: Akka Tips https://www.youtube.com/playlist?list=PLmtsMNDRU0Bz3zS-3wqY4Z5tNBz6nft1W
